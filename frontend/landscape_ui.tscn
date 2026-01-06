@@ -1,0 +1,165 @@
+[gd_scene load_steps=12 format=3 uid="uid://dgbacxvbwjfsh"]
+
+[ext_resource type="Script" uid="uid://cd42rybf366x2" path="res://landscape_ui.gd" id="1_land"]
+[ext_resource type="PackedScene" uid="uid://bgklhpsaac82q" path="res://omnipad.tscn" id="2_pad"]
+[ext_resource type="PackedScene" uid="uid://c5k0xmbhdlmaw" path="res://key.tscn" id="3_key"]
+[ext_resource type="Texture2D" uid="uid://cih0d0dnky0b5" path="res://assets/btn_x_normal.png" id="4_x_norm"]
+[ext_resource type="Texture2D" uid="uid://c6bxpj3hmbwud" path="res://assets/btn_x_pressed.png" id="5_x_press"]
+[ext_resource type="Texture2D" uid="uid://bv08ad6f60lbc" path="res://assets/btn_o_normal.png" id="6_o_norm"]
+[ext_resource type="Texture2D" uid="uid://csbabskwk0hiv" path="res://assets/btn_o_pressed.png" id="7_o_press"]
+[ext_resource type="Texture2D" uid="uid://xrb2fdeigmrg" path="res://assets/btn_esc_normal.png" id="8_esc_norm"]
+[ext_resource type="Texture2D" uid="uid://dgcgu5h435dwx" path="res://assets/btn_esc_pressed.png" id="9_esc_press"]
+[ext_resource type="Texture2D" uid="uid://dlu77ynuh6dl1" path="res://assets/btn_menu_normal.png" id="10_menu_norm"]
+[ext_resource type="Texture2D" uid="uid://cts6512y2afit" path="res://assets/btn_menu_pressed.png" id="11_menu_press"]
+
+[node name="LandscapeUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_land")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LeftPad" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 260.0
+offset_bottom = 400.0
+mouse_filter = 2
+
+[node name="Omnipad" parent="Control/LeftPad" instance=ExtResource("2_pad")]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 56.0
+offset_bottom = 55.0
+scale = Vector2(0.85, 0.85)
+expand_mode = 1
+
+[node name="RightPad" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -68.0
+offset_bottom = 120.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="Z" parent="Control/RightPad" instance=ExtResource("3_key")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -6.5
+offset_top = -21.5
+offset_right = 15.5
+offset_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 1)
+texture = ExtResource("6_o_norm")
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
+key_id = "Z"
+cap_type = 1
+cap_text = "06"
+font_type = 4
+special_behaviour = 1
+texture_normal = ExtResource("6_o_norm")
+texture_pressed = ExtResource("7_o_press")
+
+[node name="X" parent="Control/RightPad" instance=ExtResource("3_key")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -33.0
+offset_top = -6.0
+offset_right = -11.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 1)
+texture = ExtResource("4_x_norm")
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
+key_id = "X"
+cap_type = 1
+cap_text = "05"
+font_type = 4
+special_behaviour = 1
+texture_normal = ExtResource("4_x_norm")
+texture_pressed = ExtResource("5_x_press")
+
+[node name="SystemButtons" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -55.0
+offset_right = -5.0
+offset_bottom = 200.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="Escape" parent="Control/SystemButtons" instance=ExtResource("3_key")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.28
+anchor_right = -0.28
+offset_top = 8.0
+offset_right = 22.0
+offset_bottom = 20.0
+grow_horizontal = 2
+scale = Vector2(1, 1)
+texture = ExtResource("8_esc_norm")
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
+key_id = "Escape"
+cap_text = "eSC"
+unicode = false
+texture_normal = ExtResource("8_esc_norm")
+texture_pressed = ExtResource("9_esc_press")
+metadata/_edit_use_anchors_ = true
+
+[node name="Pause" parent="Control/SystemButtons" instance=ExtResource("3_key")]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 14.333332
+offset_top = 8.0
+offset_right = 36.333332
+offset_bottom = 20.0
+scale = Vector2(1, 1)
+texture = ExtResource("10_menu_norm")
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
+key_id = "P"
+cap_text = "pAUSE"
+unicode = false
+texture_normal = ExtResource("10_menu_norm")
+texture_pressed = ExtResource("11_menu_press")
+metadata/_edit_use_anchors_ = true

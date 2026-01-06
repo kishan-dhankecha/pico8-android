@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bsbipulwwdclu"
-path="res://.godot/imported/onmipad.png-5b07e27e933aada2f751e9035acc7abd.ctex"
+uid="uid://xrb2fdeigmrg"
+path="res://.godot/imported/btn_esc_normal.png-f1267087419c0935b24dac579ddfd644.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/onmipad.png"
-dest_files=["res://.godot/imported/onmipad.png-5b07e27e933aada2f751e9035acc7abd.ctex"]
+source_file="res://assets/btn_esc_normal.png"
+dest_files=["res://.godot/imported/btn_esc_normal.png-f1267087419c0935b24dac579ddfd644.ctex"]
 
 [params]
 

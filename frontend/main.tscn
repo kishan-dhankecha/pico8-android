@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://crejfo36g5bip"]
+[gd_scene load_steps=39 format=3 uid="uid://crejfo36g5bip"]
 
 [ext_resource type="Script" uid="uid://6wbbc364xejy" path="res://video_streamer.gd" id="1_ig7tw"]
 [ext_resource type="Texture2D" uid="uid://n7xqvr4frt03" path="res://assets/cartdl/cartdl_01.png" id="5_b1qrp"]
@@ -24,6 +24,16 @@
 [ext_resource type="Script" uid="uid://3yarkysfetgu" path="res://kb_toggler.gd" id="37_come4"]
 [ext_resource type="PackedScene" uid="uid://bgklhpsaac82q" path="res://omnipad.tscn" id="41_0cp0l"]
 [ext_resource type="Script" uid="uid://c7rts7fcblaav" path="res://run_pico_cmd.gd" id="41_4lmeg"]
+[ext_resource type="PackedScene" uid="uid://dgbacxvbwjfsh" path="res://landscape_ui.tscn" id="42_land"]
+[ext_resource type="Texture2D" uid="uid://cih0d0dnky0b5" path="res://assets/btn_x_normal.png" id="43_x_norm"]
+[ext_resource type="Texture2D" uid="uid://c6bxpj3hmbwud" path="res://assets/btn_x_pressed.png" id="44_x_press"]
+[ext_resource type="Texture2D" uid="uid://bv08ad6f60lbc" path="res://assets/btn_o_normal.png" id="45_o_norm"]
+[ext_resource type="Texture2D" uid="uid://csbabskwk0hiv" path="res://assets/btn_o_pressed.png" id="46_o_press"]
+[ext_resource type="Texture2D" uid="uid://xrb2fdeigmrg" path="res://assets/btn_esc_normal.png" id="47_esc_norm"]
+[ext_resource type="Texture2D" uid="uid://dgcgu5h435dwx" path="res://assets/btn_esc_pressed.png" id="48_esc_press"]
+[ext_resource type="Texture2D" uid="uid://dlu77ynuh6dl1" path="res://assets/btn_menu_normal.png" id="49_menu_norm"]
+[ext_resource type="Texture2D" uid="uid://cts6512y2afit" path="res://assets/btn_menu_pressed.png" id="50_menu_press"]
+[ext_resource type="PackedScene" uid="uid://b6p2v8g5q4x7y" path="res://options_menu.tscn" id="170_options"]
 
 [sub_resource type="Gradient" id="Gradient_ig7tw"]
 offsets = PackedFloat32Array(0)
@@ -158,6 +168,9 @@ displayContainer = NodePath("Arranger/displayContainer")
 [node name="runcmd" type="Node" parent="."]
 script = ExtResource("41_4lmeg")
 
+[node name="OptionsMenu" parent="." instance=ExtResource("170_options")]
+
+
 [node name="Display" type="SubViewport" parent="."]
 handle_input_locally = false
 size = Vector2i(128, 128)
@@ -174,11 +187,14 @@ sprite_frames = SubResource("SpriteFrames_0odxb")
 animation = &"dl"
 autoplay = "dl_1"
 
-[node name="Arranger" type="Node2D" parent="." node_paths=PackedStringArray("rect")]
+[node name="Arranger" type="Control" parent="." node_paths=PackedStringArray("rect")]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("16_2cqfq")
 rect = NodePath("ActiveArea")
 
 [node name="ActiveArea" type="ReferenceRect" parent="Arranger"]
+layout_mode = 0
 offset_right = 128.0
 offset_bottom = 300.0
 mouse_filter = 2
@@ -194,31 +210,24 @@ centered = false
 offset = Vector2(256, 256)
 enabled = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Arranger"]
-offset_top = 161.0
-offset_right = 128.0
-offset_bottom = 174.0
+[node name="kbanchor" type="Node2D" parent="Arranger"]
+position = Vector2(0, 300)
 
-[node name="Keyboard Btn" type="Button" parent="Arranger/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Arranger/kbanchor"]
+offset_top = -150.0
+offset_right = 128.0
+offset_bottom = -137.0
+
+[node name="Keyboard Btn" type="Button" parent="Arranger/kbanchor/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
+focus_mode = 0
 theme_override_fonts/font = ExtResource("20_d13ii")
 theme_override_font_sizes/font_size = 5
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d13ii")
 text = "fULL kEYBOARD"
 
-[node name="Haptic Btn" type="Button" parent="Arranger/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 10
-theme_override_fonts/font = ExtResource("20_d13ii")
-theme_override_font_sizes/font_size = 5
-theme_override_styles/focus = SubResource("StyleBoxEmpty_d13ii")
-text = "hAPTIC: oN"
-alignment = 2
-metadata/_edit_use_anchors_ = true
 
-[node name="kbanchor" type="Node2D" parent="Arranger"]
-position = Vector2(0, 300)
 
 [node name="kb_pocketchip" type="Node2D" parent="Arranger/kbanchor"]
 visible = false
@@ -229,7 +238,6 @@ script = ExtResource("37_come4")
 offset_top = 44.0
 offset_right = 5.5
 offset_bottom = 53.0
-mouse_filter = 0
 key_id = "Q"
 cap_text = "q"
 font_type = 2
@@ -240,7 +248,6 @@ metadata/_edit_use_anchors_ = true
 offset_top = 2.0
 offset_right = 5.5
 offset_bottom = 11.0
-mouse_filter = 0
 key_id = "Escape"
 cap_text = "ESC"
 font_type = 3
@@ -252,7 +259,6 @@ offset_left = 13.0
 offset_top = 44.0
 offset_right = 18.5
 offset_bottom = 53.0
-mouse_filter = 0
 key_id = "W"
 cap_text = "w"
 font_type = 2
@@ -264,7 +270,6 @@ offset_left = 23.0
 offset_top = 28.0
 offset_right = 29.0
 offset_bottom = 35.0
-mouse_filter = 0
 key_id = "Down"
 cap_type = 1
 cap_text = "02"
@@ -277,7 +282,6 @@ offset_left = 13.0
 offset_top = 15.0
 offset_right = 19.0
 offset_bottom = 22.0
-mouse_filter = 0
 cap_type = 1
 cap_text = "03"
 font_type = 4
@@ -288,7 +292,6 @@ metadata/_edit_use_anchors_ = true
 offset_left = 23.0
 offset_top = 2.0
 offset_right = 29.0
-mouse_filter = 0
 key_id = "Up"
 cap_type = 1
 cap_text = "01"
@@ -301,7 +304,6 @@ offset_left = 33.0
 offset_top = 15.0
 offset_right = 39.0
 offset_bottom = 22.0
-mouse_filter = 0
 key_id = "Right"
 cap_type = 1
 cap_text = "04"
@@ -314,7 +316,6 @@ offset_left = 26.0
 offset_top = 44.0
 offset_right = 31.5
 offset_bottom = 53.0
-mouse_filter = 0
 key_id = "E"
 cap_text = "e"
 font_type = 2
@@ -326,7 +327,6 @@ offset_left = 39.0
 offset_top = 44.0
 offset_right = 44.5
 offset_bottom = 53.0
-mouse_filter = 0
 key_id = "R"
 cap_text = "r"
 font_type = 2
@@ -338,7 +338,6 @@ offset_left = 52.0
 offset_top = 44.0
 offset_right = 57.5
 offset_bottom = 53.0
-mouse_filter = 0
 key_id = "T"
 cap_text = "t"
 font_type = 2
@@ -350,7 +349,6 @@ offset_left = 65.0
 offset_top = 44.0
 offset_right = 70.5
 offset_bottom = 53.0
-mouse_filter = 0
 key_id = "Y"
 cap_text = "y"
 font_type = 2
@@ -362,7 +360,6 @@ offset_left = 78.0
 offset_top = 44.0
 offset_right = 83.5
 offset_bottom = 53.0
-mouse_filter = 0
 key_id = "U"
 cap_text = "u"
 font_type = 2
@@ -374,7 +371,6 @@ offset_left = 91.0
 offset_top = 44.0
 offset_right = 96.5
 offset_bottom = 53.0
-mouse_filter = 0
 key_id = "I"
 cap_text = "i"
 font_type = 2
@@ -386,7 +382,6 @@ offset_left = 104.0
 offset_top = 44.0
 offset_right = 109.5
 offset_bottom = 53.0
-mouse_filter = 0
 key_id = "O"
 cap_text = "o"
 font_type = 2
@@ -398,7 +393,6 @@ offset_left = 117.0
 offset_top = 44.0
 offset_right = 122.5
 offset_bottom = 53.0
-mouse_filter = 0
 key_id = "P"
 cap_text = "p"
 font_type = 2
@@ -409,7 +403,6 @@ metadata/_edit_use_anchors_ = true
 offset_top = 64.0
 offset_right = 5.5
 offset_bottom = 73.0
-mouse_filter = 0
 key_id = "A"
 font_type = 2
 special_behaviour = 1
@@ -420,7 +413,6 @@ offset_left = 13.0
 offset_top = 64.0
 offset_right = 18.5
 offset_bottom = 73.0
-mouse_filter = 0
 key_id = "S"
 cap_text = "s"
 font_type = 2
@@ -432,7 +424,6 @@ offset_left = 26.0
 offset_top = 64.0
 offset_right = 31.5
 offset_bottom = 73.0
-mouse_filter = 0
 key_id = "D"
 cap_text = "d"
 font_type = 2
@@ -444,7 +435,6 @@ offset_left = 39.0
 offset_top = 64.0
 offset_right = 44.5
 offset_bottom = 73.0
-mouse_filter = 0
 key_id = "F"
 cap_text = "f"
 font_type = 2
@@ -456,7 +446,6 @@ offset_left = 52.0
 offset_top = 64.0
 offset_right = 57.5
 offset_bottom = 73.0
-mouse_filter = 0
 key_id = "G"
 cap_text = "g"
 font_type = 2
@@ -468,7 +457,6 @@ offset_left = 65.0
 offset_top = 64.0
 offset_right = 70.5
 offset_bottom = 73.0
-mouse_filter = 0
 key_id = "H"
 cap_text = "h"
 font_type = 2
@@ -480,7 +468,6 @@ offset_left = 78.0
 offset_top = 64.0
 offset_right = 83.5
 offset_bottom = 73.0
-mouse_filter = 0
 key_id = "J"
 cap_text = "j"
 font_type = 2
@@ -492,7 +479,6 @@ offset_left = 91.0
 offset_top = 64.0
 offset_right = 96.5
 offset_bottom = 73.0
-mouse_filter = 0
 key_id = "K"
 cap_text = "k"
 font_type = 2
@@ -504,7 +490,6 @@ offset_left = 104.0
 offset_top = 64.0
 offset_right = 109.5
 offset_bottom = 73.0
-mouse_filter = 0
 key_id = "L"
 cap_text = "l"
 font_type = 2
@@ -516,7 +501,6 @@ offset_left = 46.0
 offset_top = 2.0
 offset_right = 51.5
 offset_bottom = 11.0
-mouse_filter = 0
 key_id = "1"
 cap_text = "1"
 cap_type_shift = 0
@@ -529,7 +513,6 @@ offset_left = 59.0
 offset_top = 2.0
 offset_right = 64.5
 offset_bottom = 11.0
-mouse_filter = 0
 key_id = "3"
 cap_text = "3"
 cap_type_shift = 0
@@ -542,7 +525,6 @@ offset_left = 72.0
 offset_top = 2.0
 offset_right = 77.5
 offset_bottom = 11.0
-mouse_filter = 0
 key_id = "5"
 cap_text = "5"
 cap_type_shift = 0
@@ -555,7 +537,6 @@ offset_left = 85.0
 offset_top = 2.0
 offset_right = 90.5
 offset_bottom = 11.0
-mouse_filter = 0
 key_id = "7"
 cap_text = "7"
 cap_type_shift = 0
@@ -568,7 +549,6 @@ offset_left = 98.0
 offset_top = 2.0
 offset_right = 103.5
 offset_bottom = 11.0
-mouse_filter = 0
 key_id = "9"
 cap_text = "9"
 cap_type_shift = 0
@@ -581,7 +561,6 @@ offset_left = 111.0
 offset_top = 2.0
 offset_right = 116.5
 offset_bottom = 11.0
-mouse_filter = 0
 key_id = "Minus"
 cap_text = "-"
 cap_type_shift = 0
@@ -594,7 +573,6 @@ offset_left = 117.0
 offset_top = 22.0
 offset_right = 122.5
 offset_bottom = 31.0
-mouse_filter = 0
 key_id = "Equal"
 cap_text = "="
 cap_type_shift = 0
@@ -607,7 +585,6 @@ offset_left = 52.0
 offset_top = 22.0
 offset_right = 57.5
 offset_bottom = 31.0
-mouse_filter = 0
 key_id = "2"
 cap_text = "2"
 cap_type_shift = 0
@@ -620,7 +597,6 @@ offset_left = 65.0
 offset_top = 22.0
 offset_right = 70.5
 offset_bottom = 31.0
-mouse_filter = 0
 key_id = "4"
 cap_text = "4"
 cap_type_shift = 0
@@ -633,7 +609,6 @@ offset_left = 78.0
 offset_top = 22.0
 offset_right = 83.5
 offset_bottom = 31.0
-mouse_filter = 0
 key_id = "6"
 cap_text = "6"
 cap_type_shift = 0
@@ -646,7 +621,6 @@ offset_left = 91.0
 offset_top = 22.0
 offset_right = 96.5
 offset_bottom = 31.0
-mouse_filter = 0
 key_id = "8"
 cap_text = "8"
 cap_type_shift = 0
@@ -659,7 +633,6 @@ offset_left = 104.0
 offset_top = 22.0
 offset_right = 109.5
 offset_bottom = 31.0
-mouse_filter = 0
 key_id = "0"
 cap_text = "0"
 cap_type_shift = 0
@@ -672,7 +645,6 @@ offset_left = 13.0
 offset_top = 104.0
 offset_right = 18.5
 offset_bottom = 113.0
-mouse_filter = 0
 key_id = "Shift"
 cap_text = "SH
 FT"
@@ -686,7 +658,6 @@ offset_left = 26.0
 offset_top = 104.0
 offset_right = 31.5
 offset_bottom = 113.0
-mouse_filter = 0
 key_id = "Alt"
 cap_text = "ALT"
 font_type = 3
@@ -699,7 +670,6 @@ offset_left = 39.0
 offset_top = 104.0
 offset_right = 57.5
 offset_bottom = 113.0
-mouse_filter = 0
 key_id = "Space"
 cap_text = " "
 font_type = 3
@@ -709,7 +679,6 @@ metadata/_edit_use_anchors_ = true
 offset_top = 104.0
 offset_right = 5.5
 offset_bottom = 113.0
-mouse_filter = 0
 key_id = "Ctrl"
 cap_text = "CT
 RL"
@@ -722,7 +691,6 @@ metadata/_edit_use_anchors_ = true
 offset_top = 84.0
 offset_right = 5.5
 offset_bottom = 93.0
-mouse_filter = 0
 key_id = "Tab"
 cap_text = "TAB"
 font_type = 3
@@ -734,7 +702,6 @@ offset_left = 13.0
 offset_top = 84.0
 offset_right = 18.5
 offset_bottom = 93.0
-mouse_filter = 0
 key_id = "Z"
 cap_text = "z"
 font_type = 2
@@ -746,7 +713,6 @@ offset_left = 26.0
 offset_top = 84.0
 offset_right = 31.5
 offset_bottom = 93.0
-mouse_filter = 0
 key_id = "X"
 cap_text = "x"
 font_type = 2
@@ -758,7 +724,6 @@ offset_left = 39.0
 offset_top = 84.0
 offset_right = 44.5
 offset_bottom = 93.0
-mouse_filter = 0
 key_id = "C"
 cap_text = "c"
 font_type = 2
@@ -770,7 +735,6 @@ offset_left = 52.0
 offset_top = 84.0
 offset_right = 57.5
 offset_bottom = 93.0
-mouse_filter = 0
 key_id = "V"
 cap_text = "v"
 font_type = 2
@@ -782,7 +746,6 @@ offset_left = 65.0
 offset_top = 84.0
 offset_right = 70.5
 offset_bottom = 93.0
-mouse_filter = 0
 key_id = "B"
 cap_text = "b"
 font_type = 2
@@ -794,7 +757,6 @@ offset_left = 78.0
 offset_top = 84.0
 offset_right = 83.5
 offset_bottom = 93.0
-mouse_filter = 0
 key_id = "N"
 cap_text = "n"
 font_type = 2
@@ -806,7 +768,6 @@ offset_left = 91.0
 offset_top = 84.0
 offset_right = 96.5
 offset_bottom = 93.0
-mouse_filter = 0
 key_id = "M"
 cap_text = "m"
 font_type = 2
@@ -818,7 +779,6 @@ offset_left = 104.0
 offset_top = 84.0
 offset_right = 109.5
 offset_bottom = 93.0
-mouse_filter = 0
 key_id = "Semicolon"
 cap_text = ";"
 cap_type_shift = 0
@@ -831,7 +791,6 @@ offset_left = 117.0
 offset_top = 84.0
 offset_right = 122.5
 offset_bottom = 93.0
-mouse_filter = 0
 key_id = "Enter"
 cap_text = "RET"
 font_type = 3
@@ -843,7 +802,6 @@ offset_left = 117.0
 offset_top = 64.0
 offset_right = 122.5
 offset_bottom = 73.0
-mouse_filter = 0
 key_id = "Backspace"
 key_id_shift_override = "Delete"
 cap_text = "BK
@@ -859,7 +817,6 @@ offset_left = 78.0
 offset_top = 104.0
 offset_right = 83.5
 offset_bottom = 113.0
-mouse_filter = 0
 key_id = "Comma"
 cap_text = ","
 cap_type_shift = 0
@@ -872,7 +829,6 @@ offset_left = 91.0
 offset_top = 104.0
 offset_right = 96.5
 offset_bottom = 113.0
-mouse_filter = 0
 key_id = "Period"
 cap_text = "."
 cap_type_shift = 0
@@ -885,7 +841,6 @@ offset_left = 104.0
 offset_top = 104.0
 offset_right = 109.5
 offset_bottom = 113.0
-mouse_filter = 0
 key_id = "Slash"
 cap_text = "/"
 cap_type_shift = 0
@@ -898,7 +853,6 @@ offset_left = 117.0
 offset_top = 104.0
 offset_right = 122.5
 offset_bottom = 113.0
-mouse_filter = 0
 key_id = "Apostrophe"
 cap_text = "'"
 cap_type_shift = 0
@@ -910,7 +864,6 @@ metadata/_edit_use_anchors_ = true
 offset_top = 22.0
 offset_right = 5.5
 offset_bottom = 31.0
-mouse_filter = 0
 key_id = "QuoteLeft"
 cap_text = "`"
 cap_type_shift = 0
@@ -924,7 +877,7 @@ script = ExtResource("37_come4")
 type = 0
 
 [node name="Pico8LogoVector" type="Sprite2D" parent="Arranger/kbanchor/kb_gaming"]
-position = Vector2(65, 93)
+position = Vector2(65, 110)
 scale = Vector2(0.21, 0.21)
 texture = ExtResource("23_1u8w0")
 
@@ -933,11 +886,17 @@ offset_left = 77.0
 offset_top = 4.0
 offset_right = 88.0
 offset_bottom = 10.0
-mouse_filter = 0
+texture = ExtResource("47_esc_norm")
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
 key_id = "Escape"
-cap_text = "ESC"
+cap_text = "eSC"
 font_type = 3
 unicode = false
+texture_normal = ExtResource("47_esc_norm")
+texture_pressed = ExtResource("48_esc_press")
 metadata/_edit_use_anchors_ = true
 
 [node name="P" parent="Arranger/kbanchor/kb_gaming" instance=ExtResource("20_82xsv")]
@@ -945,43 +904,65 @@ offset_left = 103.0
 offset_top = 4.0
 offset_right = 114.0
 offset_bottom = 10.0
-mouse_filter = 0
+texture = ExtResource("49_menu_norm")
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
 key_id = "P"
-cap_text = "PAUSE"
+cap_text = "pAUSE"
 font_type = 3
 unicode = false
+texture_normal = ExtResource("49_menu_norm")
+texture_pressed = ExtResource("50_menu_press")
 metadata/_edit_use_anchors_ = true
 
 [node name="Z" parent="Arranger/kbanchor/kb_gaming" instance=ExtResource("20_82xsv")]
-offset_left = 77.0
-offset_top = 39.0
-offset_right = 88.0
-offset_bottom = 50.0
-mouse_filter = 0
-key_id = "Z"
-cap_type = 1
-cap_text = "06"
-font_type = 4
-unicode = false
-special_behaviour = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="X" parent="Arranger/kbanchor/kb_gaming" instance=ExtResource("20_82xsv")]
 offset_left = 102.0
 offset_top = 24.0
 offset_right = 113.0
 offset_bottom = 35.0
-mouse_filter = 0
+texture = ExtResource("45_o_norm")
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
+key_id = "Z"
+cap_type = 1
+cap_text = "06"
+font_type = 4
+special_behaviour = 1
+texture_normal = ExtResource("45_o_norm")
+texture_pressed = ExtResource("46_o_press")
+metadata/_edit_use_anchors_ = true
+
+[node name="X" parent="Arranger/kbanchor/kb_gaming" instance=ExtResource("20_82xsv")]
+offset_left = 77.0
+offset_top = 39.0
+offset_right = 88.0
+offset_bottom = 50.0
+texture = ExtResource("43_x_norm")
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
 key_id = "X"
 cap_type = 1
 cap_text = "05"
 font_type = 4
 special_behaviour = 1
+texture_normal = ExtResource("43_x_norm")
+texture_pressed = ExtResource("44_x_press")
 metadata/_edit_use_anchors_ = true
 
 [node name="Onmipad" parent="Arranger/kbanchor/kb_gaming" instance=ExtResource("41_0cp0l")]
 offset_left = 3.0
 offset_top = 4.0
-offset_right = 34.0
-offset_bottom = 35.0
+offset_right = 47.0
+offset_bottom = 47.0
+scale = Vector2(0.85, 0.85)
+expand_mode = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="LandscapeUI" parent="." instance=ExtResource("42_land")]
+visible = false

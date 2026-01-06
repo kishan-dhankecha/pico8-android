@@ -1,0 +1,150 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6p2v8g5q4x7y"]
+
+[ext_resource type="Script" path="res://options_menu.gd" id="1_options"]
+[ext_resource type="Texture2D" uid="uid://cfy8e87xc6p0b" path="res://assets/cog_icon.png" id="2_cog"]
+
+[node name="OptionsMenu" type="CanvasLayer"]
+script = ExtResource("1_options")
+
+[node name="SlidePanel" type="ColorRect" parent="."]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_right = 0.0
+grow_vertical = 2
+color = Color(0.1, 0.1, 0.1, 0.95)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SlidePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 40.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Header" type="HBoxContainer" parent="SlidePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="SlidePanel/VBoxContainer/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_cog")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="SlidePanel/VBoxContainer/Header"]
+layout_mode = 2
+text = "OPTIONS"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="SlidePanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="HapticRow" type="HBoxContainer" parent="SlidePanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonHaptic" type="Button" parent="SlidePanel/VBoxContainer/HapticRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+text = "Haptic Feedback"
+flat = true
+alignment = 0
+
+[node name="WrapperHaptic" type="Control" parent="SlidePanel/VBoxContainer/HapticRow"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="ToggleHaptic" type="CheckButton" parent="SlidePanel/VBoxContainer/HapticRow/WrapperHaptic"]
+unique_name_in_owner = true
+layout_mode = 0
+focus_mode = 0
+
+[node name="KeyboardRow" type="HBoxContainer" parent="SlidePanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonKeyboard" type="Button" parent="SlidePanel/VBoxContainer/KeyboardRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+text = "Full Keyboard"
+flat = true
+alignment = 0
+
+[node name="WrapperKeyboard" type="Control" parent="SlidePanel/VBoxContainer/KeyboardRow"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="ToggleKeyboard" type="CheckButton" parent="SlidePanel/VBoxContainer/KeyboardRow/WrapperKeyboard"]
+unique_name_in_owner = true
+layout_mode = 0
+focus_mode = 0
+
+[node name="InputModeRow" type="HBoxContainer" parent="SlidePanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonInputMode" type="Button" parent="SlidePanel/VBoxContainer/InputModeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+text = "Input: Mouse"
+flat = true
+alignment = 0
+
+[node name="WrapperInputMode" type="Control" parent="SlidePanel/VBoxContainer/InputModeRow"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="ToggleInputMode" type="CheckButton" parent="SlidePanel/VBoxContainer/InputModeRow/WrapperInputMode"]
+unique_name_in_owner = true
+layout_mode = 0
+focus_mode = 0
+
+[node name="CloseButton" type="Button" parent="SlidePanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+focus_mode = 0
+text = "Close Menu"
+
+[node name="VersionLabel" type="Label" parent="SlidePanel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+text = "v1.0"
+horizontal_alignment = 1
+
+[node name="EdgeHandler" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 30.0
+grow_vertical = 2
+mouse_default_cursor_shape = 10

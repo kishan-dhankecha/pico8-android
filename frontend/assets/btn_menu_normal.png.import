@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bsbipulwwdclu"
-path="res://.godot/imported/onmipad.png-5b07e27e933aada2f751e9035acc7abd.ctex"
+uid="uid://dlu77ynuh6dl1"
+path="res://.godot/imported/btn_menu_normal.png-5de1044a238d47ac14d00db91b9342c2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/onmipad.png"
-dest_files=["res://.godot/imported/onmipad.png-5b07e27e933aada2f751e9035acc7abd.ctex"]
+source_file="res://assets/btn_menu_normal.png"
+dest_files=["res://.godot/imported/btn_menu_normal.png-5de1044a238d47ac14d00db91b9342c2.ctex"]
 
 [params]
 

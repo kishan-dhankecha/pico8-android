@@ -1,71 +1,153 @@
 extends TextureRect
 
 func send_ev(key: String, down: bool):
-    PicoVideoStreamer.instance.vkb_setstate(key, down)
+	PicoVideoStreamer.instance.vkb_setstate(key, down)
 
-const center_offset = Vector2(5.5, 6)
-const SHIFT = Vector2(10, 10)
-const ORIGIN = Vector2(0, -1)
+var center_offset = Vector2.ZERO
+const SHIFT = Vector2(13.5, 13.5)
+const ORIGIN = Vector2(0, 0)
 
-func constrain(ax: float, shift: float, origin: float):
-    if ax <= origin+shift*0.5:
-        return 0
-    elif ax >= origin+shift*1.5:
-        return 2
-    else:
-        return 1
+@onready var lit_texture = preload("res://assets/omnipad_lit.png")
+
+func _ready() -> void:
+	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	center_offset = size / 2
+	
+	# Convert normal TextureRects to use AtlasTexture dynamically
+	# This avoids hardcoding sizes in the .tscn
+	var w = lit_texture.get_width()
+	var h = lit_texture.get_height()
+	
+	# Assume 3x3 grid logic for D-pad slices
+	# 3x3 Grid Logic to isolate arms and avoid center overlap
+	var s_w = w / 3.0
+	var s_h = h / 3.0
+	
+	# Destination sizing (based on actual component size, e.g. 44x43)
+	var dest_w = size.x / 3.0
+	var dest_h = size.y / 3.0
+	
+	# UP: Top-Center Block
+	var at_up = AtlasTexture.new()
+	at_up.atlas = lit_texture
+	at_up.region = Rect2(s_w, 0, s_w, s_h)
+	at_up.filter_clip = true
+	%Up.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	%Up.texture = at_up
+	%Up.position = Vector2(dest_w, 0)
+	%Up.size = Vector2(dest_w, dest_h)
+	
+	# DOWN: Bottom-Center Block
+	var at_down = AtlasTexture.new()
+	at_down.atlas = lit_texture
+	at_down.region = Rect2(s_w, s_h * 2, s_w, s_h)
+	%Down.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	%Down.texture = at_down
+	%Down.position = Vector2(dest_w, dest_h * 2)
+	%Down.size = Vector2(dest_w, dest_h)
+	
+	# LEFT: Middle-Left Block
+	var at_left = AtlasTexture.new()
+	at_left.atlas = lit_texture
+	at_left.region = Rect2(0, s_h, s_w, s_h)
+	%Left.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	%Left.texture = at_left
+	%Left.position = Vector2(0, dest_h)
+	%Left.size = Vector2(dest_w, dest_h)
+	
+	# RIGHT: Middle-Right Block
+	var at_right = AtlasTexture.new()
+	at_right.atlas = lit_texture
+	at_right.region = Rect2(s_w * 2, s_h, s_w, s_h)
+	%Right.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	%Right.texture = at_right
+	%Right.position = Vector2(dest_w * 2, dest_h)
+	%Right.size = Vector2(dest_w, dest_h)
+	
+	# Reset all
+	update_visuals(Vector2i.ONE)
+
+func constrain(val: float, shift: float, _origin: float):
+	# Symmetric deadzone logic
+	var threshold = shift * 0.4
+	
+	if val < -threshold:
+		return 0
+	elif val > threshold:
+		return 2
+	else:
+		return 1
 
 var current_dir = Vector2i.ONE
+
 func dir2keys(dir: Vector2i):
-    var keys = []
-    if dir.x == 0: keys.append("Left")
-    if dir.x == 2: keys.append("Right")
-    if dir.y == 0: keys.append("Up")
-    if dir.y == 2: keys.append("Down")
-    return keys
+	var keys = []
+	if dir.x == 0: keys.append("Left")
+	if dir.x == 2: keys.append("Right")
+	if dir.y == 0: keys.append("Up")
+	if dir.y == 2: keys.append("Down")
+	return keys
+
 func update_dir(new_dir: Vector2i):
-    if new_dir == current_dir:
-        return
-    var old_keys = dir2keys(current_dir)
-    var new_keys = dir2keys(new_dir)
-    for k in old_keys:
-        if k not in new_keys:
-            send_ev(k, false)
-    for k in new_keys:
-        if k not in old_keys:
-            send_ev(k, true)
-    current_dir = new_dir
+	if new_dir == current_dir:
+		return
+	var old_keys = dir2keys(current_dir)
+	var new_keys = dir2keys(new_dir)
+	for k in old_keys:
+		if k not in new_keys:
+			send_ev(k, false)
+	for k in new_keys:
+		if k not in old_keys:
+			send_ev(k, true)
+	current_dir = new_dir
+	update_visuals(new_dir)
+
+func update_visuals(dir: Vector2i):
+	# Center is (1,1)
+	%Left.visible = (dir.x == 0)
+	%Right.visible = (dir.x == 2)
+	%Up.visible = (dir.y == 0)
+	%Down.visible = (dir.y == 2)
 
 func _gui_input(event: InputEvent) -> void:
-    if event is InputEventScreenDrag or event is InputEventScreenTouch:
-        if event is InputEventScreenTouch and not event.pressed:
-            update_dir(Vector2i.ONE)
-            %Stick.position = ORIGIN + SHIFT
-        else:
-            var topleft: Vector2 = event.position - center_offset
-            var dir := Vector2i(
-                constrain(topleft.x, SHIFT.x, ORIGIN.x),
-                constrain(topleft.y, SHIFT.y, ORIGIN.y),
-            )
-            update_dir(dir)
-            var snapped = ORIGIN + Vector2(dir)*SHIFT
-            %Stick.position = snapped + round(((topleft - snapped) / 10).limit_length(1))
-    #if event is InputEventScreenTouch or event is InputEventMouseButton:
-        #if event.pressed:
-            #if key_state == KeyState.RELEASED:
-                #if can_lock and (event.double_tap if (event is InputEventScreenTouch) else event.double_click):
-                    #key_state = KeyState.LOCKED
-                #else:
-                    #key_state = KeyState.HELD
-                    #repeat_timer = Time.get_ticks_msec() + REPEAT_TIME_FIRST
-                #send_ev(true)
-            #elif key_state == KeyState.LOCKED:
-                #key_state = KeyState.HELD
-                #repeat_timer = INF
-        #elif key_state == KeyState.HELD:
-            #key_state = KeyState.RELEASED
-            #send_ev(false)
+	if event is InputEventScreenDrag or event is InputEventScreenTouch or (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventMouseMotion and (event.button_mask & MOUSE_BUTTON_MASK_LEFT)):
+		if (event is InputEventScreenTouch and not event.pressed) or (event is InputEventMouseButton and not event.pressed):
+			update_dir(Vector2i.ONE)
+		else:
+			var vec: Vector2 = event.position - center_offset
+			var threshold = SHIFT.x * 0.4
+			
+			# 1. Deadzone Check
+			if vec.length() < threshold:
+				update_dir(Vector2i.ONE)
+				return
+
+			# 2. Determine Raw Direction based on signs
+			var dir = Vector2i.ONE
+			if vec.x < -threshold: dir.x = 0
+			elif vec.x > threshold: dir.x = 2
+			
+			if vec.y < -threshold: dir.y = 0
+			elif vec.y > threshold: dir.y = 2
+			
+			# 3. Diagonal Suppression (Ratio Logic)
+			# If one axis is much stronger than the other, snap to cardinal
+			if dir.x != 1 and dir.y != 1:
+				var abs_x = abs(vec.x)
+				var abs_y = abs(vec.y)
+				var ratio = min(abs_x, abs_y) / max(abs_x, abs_y)
+				
+				# Threshold 0.6 = approx 31 degrees (Even wider cardinal zone)
+				# Increasing this makes diagonals HARDER to hit (must be more precise)
+				if ratio < 0.6:
+					# Suppress the weaker axis
+					if abs_x > abs_y:
+						dir.y = 1 # Snap to Horizontal
+					else:
+						dir.x = 1 # Snap to Vertical
+
+			update_dir(dir)
 
 func _notification(what: int) -> void:
-    if what == NOTIFICATION_VISIBILITY_CHANGED:
-        update_dir(Vector2i.ONE)
+	if what == NOTIFICATION_VISIBILITY_CHANGED or what == NOTIFICATION_MOUSE_EXIT:
+		update_dir(Vector2i.ONE)
